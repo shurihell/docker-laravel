@@ -15,7 +15,7 @@ services:
     depends_on:
       - mysql
     volumes:
-       - ./rest-api:/var/www/html:z
+       - ./source:/var/www/html:z
   nginx:
     image: nginx:latest
     restart: always
@@ -24,18 +24,18 @@ services:
     links:
       - php:php
     volumes:
-      - ./nginx/test.conf:/etc/nginx/conf.d/default.conf
-      - ./rest-api:/var/www/html:z
+      - ./nginx/web.conf:/etc/nginx/conf.d/default.conf
+      - ./source:/var/www/html:z
   mysql:
     image: mysql:5.7
     restart: always
     environment:
       MYSQL_ROOT_PASSWORD: secret
-      MYSQL_DATABASE: 1gram
-      MYSQL_USER: 1gram
+      MYSQL_DATABASE: homestead
+      MYSQL_USER: homestead
       MYSQL_PASSWORD: secret
     volumes:
-      - ./source/1gram_0830.sql:/docker-entrypoint-initdb.d/1gram.sql
+      - ./source/db/default-db.sql:/docker-entrypoint-initdb.d/homestead.sql
     ports:
       - 3306:3306
     expose:
